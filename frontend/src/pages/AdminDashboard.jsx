@@ -325,6 +325,12 @@ export default function AdminDashboard() {
               <DollarSign size={18} /> Payout Approvals
             </button>
             <button 
+              className={`sidebar-link ${activeTab === 'sales' ? 'active' : ''}`}
+              onClick={() => setActiveTab('sales')}
+            >
+              <ShoppingBag size={18} /> Sales & Conversions
+            </button>
+            <button 
               className={`sidebar-link ${activeTab === 'fraud' ? 'active' : ''}`}
               onClick={() => setActiveTab('fraud')}
             >
@@ -810,6 +816,59 @@ export default function AdminDashboard() {
                   <span>All click IPs fall within standard user click pattern metrics. No spam clicks detected.</span>
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* TABS SALES LOG & REFERRALS */}
+        {activeTab === 'sales' && (
+          <div className="card glass animate-fade-in" style={{ border: 'none', background: 'transparent', padding: 0 }}>
+            <div style={{ marginBottom: '2rem' }}>
+              <h1 className="title" style={{ marginBottom: '0.25rem' }}>Sales & Referral Log</h1>
+              <p style={{ color: 'var(--text-muted)' }}>Detailed breakdown of all referral checkouts, commissions, and customer details.</p>
+            </div>
+
+            <div className="card glass">
+              <div className="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Referring Affiliate</th>
+                      <th>Product Name</th>
+                      <th>Customer Name</th>
+                      <th>Customer Email</th>
+                      <th>Purchase Date</th>
+                      <th>Sale Amount</th>
+                      <th>Commission</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.sales.map(sale => (
+                      <tr key={sale.id}>
+                        <td><code style={{ color: 'var(--primary)', fontWeight: 600 }}>{sale.orderId}</code></td>
+                        <td>
+                          <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <strong style={{ color: 'var(--text-light)' }}>{sale.Influencer?.User?.name || 'Direct Link'}</strong>
+                            {sale.Influencer && <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Code: <code>{sale.Influencer.referralCode}</code></span>}
+                          </div>
+                        </td>
+                        <td><strong>{sale.productName || 'Premium Product'}</strong></td>
+                        <td><span style={{ fontWeight: 600 }}>{sale.customerName || 'Anonymous Customer'}</span></td>
+                        <td><span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{sale.customerEmail || 'N/A'}</span></td>
+                        <td style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                          {new Date(sale.createdAt).toLocaleString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                        </td>
+                        <td><strong>{formatCurrency(sale.amount)}</strong></td>
+                        <td style={{ color: 'var(--accent)', fontWeight: 700 }}>{formatCurrency(sale.commissionAmount)}</td>
+                      </tr>
+                    ))}
+                    {data.sales.length === 0 && (
+                      <tr><td colSpan="8" style={{ textAlign: 'center', color: 'var(--text-muted)' }}>No referral sales tracked yet</td></tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         )}
