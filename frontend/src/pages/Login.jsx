@@ -6,7 +6,7 @@ import { LogIn, UserPlus } from 'lucide-react';
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('admin@test.com');
-  const [password, setPassword] = useState('password');
+  const [password, setPassword] = useState('InfluenceOpsSecretPass123');
   const [name, setName] = useState('');
   const [role, setRole] = useState('influencer');
   const navigate = useNavigate();
