@@ -1,6 +1,6 @@
-# Influencer Affiliate Sales & Payment Tracking Platform
+# InfluenceOps AI – Influencer Affiliate Tracking & Revenue Intelligence Platform
 
-A full-stack web application designed for brands to track influencer-driven sales, manage commissions, and visualize performance through AI-powered analytics.
+A full-stack SaaS platform designed for brands to track influencer-driven sales, automate payout approvals, protect against click fraud, and forecast revenue through AI-powered intelligence.
 
 ## Features
 

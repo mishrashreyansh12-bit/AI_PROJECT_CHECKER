@@ -122,7 +122,7 @@ export default function Shop() {
       {/* Navbar */}
       <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.25rem 2rem", borderBottom: "1px solid rgba(255,255,255,0.08)", sticky: "top", background: "rgba(15,23,42,0.9)", backdropFilter: "blur(10px)" }}>
         <h2 style={{ fontFamily: "Outfit, sans-serif", fontSize: "1.5rem", fontWeight: 700, background: "linear-gradient(135deg, #a78bfa, #3b82f6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-          InfluenceIQ Store
+          InfluenceOps AI Store
         </h2>
         
         {/* Referral info badge */}

@@ -277,7 +277,7 @@ export default function AdminDashboard() {
         <div>
           <div className="sidebar-brand">
             <h2 style={{ fontFamily: 'Outfit', fontWeight: 800, fontSize: '1.6rem', background: 'linear-gradient(135deg, #a78bfa, #3b82f6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', margin: 0 }}>
-              InfluenceIQ
+              InfluenceOps AI
             </h2>
             <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Brand Admin Panel</span>
           </div>

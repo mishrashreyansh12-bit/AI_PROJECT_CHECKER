@@ -175,7 +175,7 @@ export default function InfluencerDashboard() {
         <div>
           <div className="sidebar-brand">
             <h2 style={{ fontFamily: 'Outfit', fontWeight: 800, fontSize: '1.6rem', background: 'linear-gradient(135deg, #a78bfa, #3b82f6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', margin: 0 }}>
-              InfluenceIQ
+              InfluenceOps AI
             </h2>
             <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Influencer Portal</span>
           </div>
@@ -480,7 +480,7 @@ export default function InfluencerDashboard() {
                   
                   <div style={{ width: '100%', height: '100px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', marginTop: '1rem', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <span style={{ fontFamily: 'Outfit', fontWeight: 800, fontSize: '1.5rem', background: 'linear-gradient(135deg, #a78bfa, #3b82f6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                      InfluenceIQ
+                      InfluenceOps AI
                     </span>
                   </div>
                 </div>
