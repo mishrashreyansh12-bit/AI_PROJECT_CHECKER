@@ -738,10 +738,11 @@ export default function AdminDashboard() {
                     >
                       <div>
                         <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{getRelativeTime(sale.createdAt)}</span>
-                        <p style={{ fontWeight: 600, marginTop: '0.15rem' }}>
+                        <p style={{ fontWeight: 600, marginTop: '0.15rem', marginBottom: '0.15rem' }}>
                           {sale.Influencer?.User?.name || 'Direct Link'} generated a sale
                         </p>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Product: {sale.productName || 'Premium Product'}</span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-light)', display: 'block' }}>Product: <strong>{sale.productName || 'Premium Product'}</strong></span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Customer: {sale.customerName || 'Anonymous Customer'} ({sale.customerEmail || 'N/A'})</span>
                       </div>
                       <strong style={{ color: 'var(--accent)' }}>{formatCurrency(sale.amount)}</strong>
                     </div>

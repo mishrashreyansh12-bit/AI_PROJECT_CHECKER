@@ -30,7 +30,9 @@ const Sale = sequelize.define('Sale', {
   orderId: { type: DataTypes.STRING, unique: true },
   amount: { type: DataTypes.FLOAT, allowNull: false },
   commissionAmount: { type: DataTypes.FLOAT, allowNull: false },
-  productName: { type: DataTypes.STRING, defaultValue: 'Premium Product' }
+  productName: { type: DataTypes.STRING, defaultValue: 'Premium Product' },
+  customerName: { type: DataTypes.STRING },
+  customerEmail: { type: DataTypes.STRING }
 });
 
 const Payment = sequelize.define('Payment', {

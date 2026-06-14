@@ -51,7 +51,7 @@ router.get("/sales", async (req, res) => {
 // ================= 🔥 ADD THIS (IMPORTANT) =================
 router.post("/sale", async (req, res) => {
   try {
-    const { referralCode, amount, orderId, productName } = req.body;
+    const { referralCode, amount, orderId, productName, customerName, customerEmail } = req.body;
 
     const influencer = await Influencer.findOne({
       where: { referralCode }
@@ -70,7 +70,9 @@ router.post("/sale", async (req, res) => {
       amount,
       commissionAmount: amount * influencer.commissionRate,
       orderId: orderId || `ORD-${Date.now()}`,
-      productName: productName || 'Premium Product'
+      productName: productName || 'Premium Product',
+      customerName: customerName || 'Anonymous Customer',
+      customerEmail: customerEmail || 'N/A'
     });
 
     // Automatically create a corresponding pending payout record

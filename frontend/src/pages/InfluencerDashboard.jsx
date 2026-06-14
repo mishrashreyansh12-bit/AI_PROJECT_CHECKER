@@ -475,6 +475,42 @@ export default function InfluencerDashboard() {
                 </div>
               </div>
             </div>
+
+            {/* Recent Sales Details & Customer Log */}
+            <div className="card glass" style={{ marginTop: '2rem' }}>
+              <h3 style={{ marginBottom: '1.25rem', color: 'white' }}>Recent Referral Sales & Customer Log</h3>
+              <div className="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Product</th>
+                      <th>Customer Name</th>
+                      <th>Customer Email</th>
+                      <th>Purchase Date</th>
+                      <th>Sale Amount</th>
+                      <th>Your Commission</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.Sales.slice().reverse().map(sale => (
+                      <tr key={sale.id}>
+                        <td><code style={{ color: 'var(--primary)', fontWeight: 600 }}>{sale.orderId}</code></td>
+                        <td><strong>{sale.productName || 'Premium Product'}</strong></td>
+                        <td><span style={{ fontWeight: 600, color: 'var(--text-light)' }}>{sale.customerName || 'Anonymous Customer'}</span></td>
+                        <td><span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{sale.customerEmail || 'N/A'}</span></td>
+                        <td style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{new Date(sale.createdAt).toLocaleString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+                        <td>{formatCurrency(sale.amount)}</td>
+                        <td style={{ color: 'var(--accent)', fontWeight: 700 }}>{formatCurrency(sale.commissionAmount)}</td>
+                      </tr>
+                    ))}
+                    {data.Sales.length === 0 && (
+                      <tr><td colSpan="7" style={{ textAlign: 'center', color: 'var(--text-muted)' }}>No referral sales tracked yet</td></tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         )}
 

@@ -94,7 +94,9 @@ export default function Shop() {
             referralCode: referralCode,
             amount: item.product.price * item.quantity,
             productName: item.product.name,
-            orderId: `${orderId}-${item.product.id}`
+            orderId: `${orderId}-${item.product.id}`,
+            customerName: formData.name,
+            customerEmail: formData.email
           });
         }
       }
