@@ -562,6 +562,70 @@ export default function AdminDashboard() {
                 </div>
               </div>
             </div>
+
+            {/* Referral Link Sales & Commission Summary (Grouped by Affiliate) */}
+            <div className="card glass" style={{ marginTop: '2rem' }}>
+              <h2 style={{ fontSize: '1.25rem', marginBottom: '1.25rem', color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Users size={20} /> Referral Link Sales & Commission Summary
+              </h2>
+              <div className="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Influencer Name</th>
+                      <th>Referral Link / Code</th>
+                      <th>Products Sold</th>
+                      <th>Total Gross Sales</th>
+                      <th>Total Commission Earned</th>
+                      <th>Commission Awaiting Approval</th>
+                      <th>Commission Approved</th>
+                      <th>Commission Paid</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.influencers.map(inf => {
+                      const infSales = data.sales.filter(s => s.InfluencerId === inf.id);
+                      const productsSold = infSales.length;
+                      const grossSalesVal = infSales.reduce((acc, s) => acc + s.amount, 0);
+                      const totalCommissionVal = infSales.reduce((acc, s) => acc + s.commissionAmount, 0);
+                      
+                      const infPayments = data.payments.filter(p => p.InfluencerId === inf.id);
+                      const pendingPayout = infPayments.filter(p => p.status === 'pending').reduce((acc, p) => acc + p.amount, 0);
+                      const approvedPayout = infPayments.filter(p => p.status === 'approved').reduce((acc, p) => acc + p.amount, 0);
+                      const paidPayout = infPayments.filter(p => p.status === 'paid').reduce((acc, p) => acc + p.amount, 0);
+                      
+                      return (
+                        <tr key={inf.id}>
+                          <td><strong>{inf.User?.name || 'Unknown'}</strong></td>
+                          <td>
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                              <code>{inf.referralCode}</code>
+                              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>http://localhost:5000/t/{inf.referralCode}</span>
+                            </div>
+                          </td>
+                          <td style={{ fontWeight: 600 }}>{productsSold} units</td>
+                          <td>{formatCurrency(grossSalesVal)}</td>
+                          <td style={{ color: 'var(--primary)', fontWeight: 600 }}>{formatCurrency(totalCommissionVal)}</td>
+                          <td style={{ color: pendingPayout > 0 ? '#f59e0b' : 'var(--text-muted)', fontWeight: 700 }}>
+                            {formatCurrency(pendingPayout)}
+                          </td>
+                          <td style={{ color: approvedPayout > 0 ? 'var(--accent)' : 'var(--text-muted)', fontWeight: 600 }}>
+                            {formatCurrency(approvedPayout)}
+                          </td>
+                          <td style={{ color: paidPayout > 0 ? '#10b981' : 'var(--text-muted)' }}>
+                            {formatCurrency(paidPayout)}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                    {data.influencers.length === 0 && (
+                      <tr><td colSpan="8" style={{ textAlign: 'center', color: 'var(--text-muted)' }}>No affiliate links set up yet</td></tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
           </div>
         )}
 
@@ -828,7 +892,71 @@ export default function AdminDashboard() {
               <p style={{ color: 'var(--text-muted)' }}>Detailed breakdown of all referral checkouts, commissions, and customer details.</p>
             </div>
 
+            {/* Referral Link Sales & Commission Summary (Grouped by Affiliate) */}
+            <div className="card glass" style={{ marginBottom: '2rem' }}>
+              <h2 style={{ fontSize: '1.25rem', marginBottom: '1.25rem', color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Users size={20} /> Referral Link Sales & Commission Summary
+              </h2>
+              <div className="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Influencer Name</th>
+                      <th>Referral Link / Code</th>
+                      <th>Products Sold</th>
+                      <th>Total Gross Sales</th>
+                      <th>Total Commission Earned</th>
+                      <th>Commission Awaiting Approval</th>
+                      <th>Commission Approved</th>
+                      <th>Commission Paid</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.influencers.map(inf => {
+                      const infSales = data.sales.filter(s => s.InfluencerId === inf.id);
+                      const productsSold = infSales.length;
+                      const grossSalesVal = infSales.reduce((acc, s) => acc + s.amount, 0);
+                      const totalCommissionVal = infSales.reduce((acc, s) => acc + s.commissionAmount, 0);
+                      
+                      const infPayments = data.payments.filter(p => p.InfluencerId === inf.id);
+                      const pendingPayout = infPayments.filter(p => p.status === 'pending').reduce((acc, p) => acc + p.amount, 0);
+                      const approvedPayout = infPayments.filter(p => p.status === 'approved').reduce((acc, p) => acc + p.amount, 0);
+                      const paidPayout = infPayments.filter(p => p.status === 'paid').reduce((acc, p) => acc + p.amount, 0);
+                      
+                      return (
+                        <tr key={inf.id}>
+                          <td><strong>{inf.User?.name || 'Unknown'}</strong></td>
+                          <td>
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                              <code>{inf.referralCode}</code>
+                              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>http://localhost:5000/t/{inf.referralCode}</span>
+                            </div>
+                          </td>
+                          <td style={{ fontWeight: 600 }}>{productsSold} units</td>
+                          <td>{formatCurrency(grossSalesVal)}</td>
+                          <td style={{ color: 'var(--primary)', fontWeight: 600 }}>{formatCurrency(totalCommissionVal)}</td>
+                          <td style={{ color: pendingPayout > 0 ? '#f59e0b' : 'var(--text-muted)', fontWeight: 700 }}>
+                            {formatCurrency(pendingPayout)}
+                          </td>
+                          <td style={{ color: approvedPayout > 0 ? 'var(--accent)' : 'var(--text-muted)', fontWeight: 600 }}>
+                            {formatCurrency(approvedPayout)}
+                          </td>
+                          <td style={{ color: paidPayout > 0 ? '#10b981' : 'var(--text-muted)' }}>
+                            {formatCurrency(paidPayout)}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                    {data.influencers.length === 0 && (
+                      <tr><td colSpan="8" style={{ textAlign: 'center', color: 'var(--text-muted)' }}>No affiliate links set up yet</td></tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
             <div className="card glass">
+              <h3 style={{ marginBottom: '1.25rem', color: 'white' }}>Itemized Checkout Transactions</h3>
               <div className="table-container">
                 <table>
                   <thead>
