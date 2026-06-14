@@ -32,7 +32,14 @@ export default function Login() {
   return (
     <div className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <div className="card glass animate-fade-in" style={{ width: '100%', maxWidth: '400px' }}>
-        <h2 className="title" style={{ textAlign: 'center', marginBottom: '2rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+          <h1 style={{ fontFamily: 'Outfit', fontWeight: 800, fontSize: '2.2rem', background: 'linear-gradient(135deg, #a78bfa, #3b82f6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', margin: 0 }}>
+            InfluenceIQ
+          </h1>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.25rem' }}>Affiliate Sales & Payment Tracker</p>
+        </div>
+        
+        <h2 style={{ textAlign: 'center', marginBottom: '1.5rem', fontSize: '1.25rem', color: 'var(--text-light)', fontWeight: 600 }}>
           {isLogin ? 'Welcome Back' : 'Join Platform'}
         </h2>
         
