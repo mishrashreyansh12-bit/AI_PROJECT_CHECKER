@@ -15,6 +15,7 @@ export default function AdminDashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('overview'); // 'overview', 'influencers', 'approvals', 'fraud'
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +24,7 @@ export default function AdminDashboard() {
 
   const fetchData = async () => {
     setLoading(true);
+    setError(null);
     try {
       const token = localStorage.getItem('token');
       const res = await axios.get('http://localhost:5000/api/admin/dashboard', {
@@ -67,6 +69,8 @@ export default function AdminDashboard() {
     } catch (err) {
       if (err.response?.status === 401 || err.response?.status === 403) {
         navigate('/login');
+      } else {
+        setError("Backend server is offline or not responding. Make sure backend is running on http://localhost:5000");
       }
     } finally {
       setLoading(false);
@@ -164,6 +168,25 @@ export default function AdminDashboard() {
       return true;
     });
   };
+
+  if (error) {
+    return (
+      <div className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
+        <div className="card glass animate-fade-in" style={{ maxWidth: '460px', padding: '2.5rem', textAlign: 'center', borderColor: 'var(--danger)', borderWidth: '2px' }}>
+          <div style={{ width: '64px', height: '64px', background: 'rgba(239, 68, 68, 0.15)', border: '2px solid var(--danger)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+            <AlertTriangle size={36} color="var(--danger)" />
+          </div>
+          <h2 style={{ color: 'white', marginBottom: '0.75rem', fontSize: '1.5rem' }}>Connection Failed</h2>
+          <p style={{ color: 'var(--text-muted)', marginBottom: '1.75rem', fontSize: '0.95rem', lineHeight: 1.5 }}>
+            {error}
+          </p>
+          <button className="btn btn-primary" onClick={fetchData} style={{ width: '100%', background: 'var(--danger)' }}>
+            Retry Connection
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (loading || !data) return <div className="container">Loading dashboard...</div>;
 

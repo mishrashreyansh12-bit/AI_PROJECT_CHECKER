@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { LogOut, Copy, TrendingUp, CheckCircle, DollarSign, ArrowDownToLine, Bell, ShoppingBag, CreditCard, Activity } from 'lucide-react';
+import { LogOut, Copy, TrendingUp, CheckCircle, DollarSign, ArrowDownToLine, Bell, ShoppingBag, CreditCard, Activity, AlertTriangle } from 'lucide-react';
 
 export default function InfluencerDashboard() {
   const [data, setData] = useState(null);
@@ -10,10 +10,12 @@ export default function InfluencerDashboard() {
   const [withdrawing, setWithdrawing] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [activeTab, setActiveTab] = useState('overview'); // 'overview', 'trends', 'payouts', 'resources'
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   const fetchMe = async () => {
+    setError(null);
     try {
       const token = localStorage.getItem('token');
       const res = await axios.get('http://localhost:5000/api/influencer/me', {
@@ -22,7 +24,11 @@ export default function InfluencerDashboard() {
       setData(res.data);
       generateNotifications(res.data);
     } catch (err) {
-      navigate('/login');
+      if (err.response?.status === 401 || err.response?.status === 403) {
+        navigate('/login');
+      } else {
+        setError("Backend server is offline or not responding. Make sure backend is running on http://localhost:5000");
+      }
     }
   };
 
@@ -110,6 +116,25 @@ export default function InfluencerDashboard() {
            d.getMonth() === today.getMonth() &&
            d.getFullYear() === today.getFullYear();
   };
+
+  if (error) {
+    return (
+      <div className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
+        <div className="card glass animate-fade-in" style={{ maxWidth: '460px', padding: '2.5rem', textAlign: 'center', borderColor: 'var(--danger)', borderWidth: '2px' }}>
+          <div style={{ width: '64px', height: '64px', background: 'rgba(239, 68, 68, 0.15)', border: '2px solid var(--danger)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+            <AlertTriangle size={36} color="var(--danger)" />
+          </div>
+          <h2 style={{ color: 'white', marginBottom: '0.75rem', fontSize: '1.5rem' }}>Connection Failed</h2>
+          <p style={{ color: 'var(--text-muted)', marginBottom: '1.75rem', fontSize: '0.95rem', lineHeight: 1.5 }}>
+            {error}
+          </p>
+          <button className="btn btn-primary" onClick={fetchMe} style={{ width: '100%', background: 'var(--danger)' }}>
+            Retry Connection
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (!data) return <div className="container">Loading your profile...</div>;
 
