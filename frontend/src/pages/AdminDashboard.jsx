@@ -190,8 +190,8 @@ export default function AdminDashboard() {
   const overallConversionRate = filteredClicksCount > 0 ? ((filteredSalesCount / filteredClicksCount) * 100).toFixed(1) : 0;
 
   const searchedInfluencers = data.influencers.filter(inf => 
-    inf.User?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    inf.referralCode.toLowerCase().includes(searchQuery.toLowerCase())
+    (inf.User?.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (inf.referralCode || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const salesChartData = filteredSales.slice(0, 15).reverse().map((s, i) => ({
