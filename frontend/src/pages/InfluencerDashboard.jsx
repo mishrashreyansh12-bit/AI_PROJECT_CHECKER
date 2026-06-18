@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { LogOut, Copy, TrendingUp, CheckCircle, DollarSign, ArrowDownToLine, Bell, ShoppingBag, CreditCard, Activity, AlertTriangle } from 'lucide-react';
+import { API_URL } from '../config';
 
 export default function InfluencerDashboard() {
   const [data, setData] = useState(null);
@@ -18,7 +19,7 @@ export default function InfluencerDashboard() {
     setError(null);
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/influencer/me', {
+      const res = await axios.get(`${API_URL}/api/influencer/me`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setData(res.data);
@@ -27,7 +28,7 @@ export default function InfluencerDashboard() {
       if (err.response?.status === 401 || err.response?.status === 403) {
         navigate('/login');
       } else {
-        setError("Backend server is offline or not responding. Make sure backend is running on http://localhost:5000");
+        setError(`Backend server is offline or not responding. Make sure backend is running on ${API_URL}`);
       }
     }
   };
@@ -78,7 +79,7 @@ export default function InfluencerDashboard() {
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(`http://localhost:5000/t/${data.referralCode}`);
+    navigator.clipboard.writeText(`${API_URL}/t/${data.referralCode}`);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -87,7 +88,7 @@ export default function InfluencerDashboard() {
     setWithdrawing(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.post('http://localhost:5000/api/influencer/withdraw', {}, {
+      const res = await axios.post(`${API_URL}/api/influencer/withdraw`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert(`Withdrawal request processed! ${res.data.processedPaymentsCount} payments updated to PAID.`);
@@ -255,7 +256,7 @@ export default function InfluencerDashboard() {
             <div className="card glass animate-fade-in" style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', borderLeft: '4px solid var(--primary)' }}>
               <div>
                 <h3>Your Unique Referral Link</h3>
-                <p style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '1.2rem', wordBreak: 'break-all', marginTop: '0.25rem' }}>http://localhost:5000/t/{data.referralCode}</p>
+                <p style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '1.2rem', wordBreak: 'break-all', marginTop: '0.25rem' }}>{API_URL}/t/{data.referralCode}</p>
               </div>
               <button className="btn btn-primary" onClick={handleCopy}>
                 {copied ? <><CheckCircle size={18} style={{ marginRight: '8px' }}/> Copied!</> : <><Copy size={18} style={{ marginRight: '8px' }}/> Copy Link</>}

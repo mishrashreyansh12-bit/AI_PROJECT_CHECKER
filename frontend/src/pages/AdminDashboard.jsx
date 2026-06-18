@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import { LogOut, Activity, DollarSign, Users, ShieldAlert, TrendingUp, ShoppingBag, Eye, X, AlertTriangle, CheckCircle, Search, Trash2, Ban, ShieldCheck, ChevronRight } from 'lucide-react';
+import { API_URL, AI_SERVICE_URL } from '../config';
 
 const COLORS = ['#8b5cf6', '#10b981', '#ef4444', '#f59e0b'];
 
@@ -27,7 +28,7 @@ export default function AdminDashboard() {
     setError(null);
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/admin/dashboard', {
+      const res = await axios.get(`${API_URL}/api/admin/dashboard`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setData(res.data);
@@ -46,7 +47,7 @@ export default function AdminDashboard() {
         }
 
         try {
-          const aiRes = await axios.post('http://localhost:8000/predict-sales', { history });
+          const aiRes = await axios.post(`${AI_SERVICE_URL}/predict-sales`, { history });
           setPredictions(aiRes.data.predictions || []);
         } catch(e) { console.log('AI sales prediction service not running or failed'); }
       }
@@ -60,7 +61,7 @@ export default function AdminDashboard() {
             ip_address: c.ipAddress || '127.0.0.1',
             timestamp: c.createdAt
           }));
-          const fraudRes = await axios.post('http://localhost:8000/detect-fraud', { clicks: clicksPayload });
+          const fraudRes = await axios.post(`${AI_SERVICE_URL}/detect-fraud`, { clicks: clicksPayload });
           if (fraudRes.data.fraudulent_click_ids) {
             setFraudAlerts(fraudRes.data.fraudulent_click_ids);
           }
@@ -70,7 +71,7 @@ export default function AdminDashboard() {
       if (err.response?.status === 401 || err.response?.status === 403) {
         navigate('/login');
       } else {
-        setError("Backend server is offline or not responding. Make sure backend is running on http://localhost:5000");
+        setError(`Backend server is offline or not responding. Make sure backend is running on ${API_URL}`);
       }
     } finally {
       setLoading(false);
@@ -87,7 +88,7 @@ export default function AdminDashboard() {
     try {
       const token = localStorage.getItem('token');
       const newStatus = currentStatus === 'blocked' ? 'active' : 'blocked';
-      await axios.post(`http://localhost:5000/api/admin/influencer/${influencerId}/status`, 
+      await axios.post(`${API_URL}/api/admin/influencer/${influencerId}/status`, 
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -101,7 +102,7 @@ export default function AdminDashboard() {
     if (!window.confirm("Are you sure you want to delete this influencer? This will delete all their clicks, sales, payments, and user account!")) return;
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/admin/influencer/${influencerId}`, {
+      await axios.delete(`${API_URL}/api/admin/influencer/${influencerId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchData();
@@ -113,7 +114,7 @@ export default function AdminDashboard() {
   const handleUpdatePaymentStatus = async (paymentId, newStatus) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.post(`http://localhost:5000/api/admin/payment/${paymentId}/status`, 
+      await axios.post(`${API_URL}/api/admin/payment/${paymentId}/status`, 
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );

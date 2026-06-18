@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { ShoppingCart, Trash2, Check, Star, Shield, ArrowRight, X } from "lucide-react";
+import { API_URL } from "../config";
 
 const PRODUCTS = [
   {
@@ -90,7 +91,7 @@ export default function Shop() {
       // If referred, track sales in backend
       if (referralCode) {
         for (const item of cart) {
-          await axios.post("http://localhost:5000/api/track/sale", {
+          await axios.post(`${API_URL}/api/track/sale`, {
             referralCode: referralCode,
             amount: item.product.price * item.quantity,
             productName: item.product.name,

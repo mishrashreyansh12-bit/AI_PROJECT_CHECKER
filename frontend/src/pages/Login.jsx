@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { LogIn, UserPlus } from 'lucide-react';
+import { API_URL } from '../config';
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -15,13 +16,13 @@ export default function Login() {
     e.preventDefault();
     try {
       if (isLogin) {
-        const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+        const res = await axios.post(`${API_URL}/api/auth/login`, { email, password });
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('user', JSON.stringify(res.data.user));
         if (res.data.user.role === 'admin') navigate('/admin');
         else navigate('/influencer');
       } else {
-        await axios.post('http://localhost:5000/api/auth/register', { name, email, password, role });
+        await axios.post(`${API_URL}/api/auth/register`, { name, email, password, role });
         setIsLogin(true);
       }
     } catch (err) {
