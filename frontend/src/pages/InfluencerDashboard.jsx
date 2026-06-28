@@ -79,7 +79,7 @@ export default function InfluencerDashboard() {
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(`${API_URL}/t/${data.referralCode}`);
+    navigator.clipboard.writeText(`${window.location.origin}/t/${data.referralCode}`);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -278,7 +278,7 @@ export default function InfluencerDashboard() {
             <div className="card glass animate-fade-in" style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', borderLeft: '4px solid var(--primary)' }}>
               <div>
                 <h3>Your Unique Referral Link</h3>
-                <p style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '1.2rem', wordBreak: 'break-all', marginTop: '0.25rem' }}>{API_URL}/t/{data.referralCode}</p>
+                <p style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '1.2rem', wordBreak: 'break-all', marginTop: '0.25rem' }}>{window.location.origin}/t/{data.referralCode}</p>
               </div>
               <button className="btn btn-primary" onClick={handleCopy}>
                 {copied ? <><CheckCircle size={18} style={{ marginRight: '8px' }}/> Copied!</> : <><Copy size={18} style={{ marginRight: '8px' }}/> Copy Link</>}
