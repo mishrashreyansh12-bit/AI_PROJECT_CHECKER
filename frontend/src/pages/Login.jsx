@@ -6,8 +6,8 @@ import { API_URL } from '../config';
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState('admin@test.com');
-  const [password, setPassword] = useState('InfluenceOpsSecretPass123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [role, setRole] = useState('influencer');
   const navigate = useNavigate();
@@ -63,12 +63,12 @@ export default function Login() {
           
           <div className="input-group">
             <label>Email</label>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} className="input" required />
+            <input type="email" value={email} onChange={e => setEmail(e.target.value)} className="input" placeholder="name@example.com" required />
           </div>
           
           <div className="input-group">
             <label>Password</label>
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="input" required />
+            <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="input" placeholder="••••••••" required />
           </div>
 
           <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
