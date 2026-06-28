@@ -311,6 +311,9 @@ app.get('/t/:refCode', async (req, res) => {
       where: { referralCode: refCode },
     });
 
+    const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+    const host = req.headers.host || '';
+
     if (influencer) {
       if (influencer.status === 'blocked') {
         return res.status(403).send('<h1>Access Suspended</h1><p>This affiliate account is currently suspended.</p>');
@@ -321,10 +324,18 @@ app.get('/t/:refCode', async (req, res) => {
         userAgent: req.headers['user-agent'],
       });
 
-      return res.redirect(`http://localhost:5173/shop?ref=${refCode}`);
+      let redirectUrl = `${protocol}://${host}/shop?ref=${refCode}`;
+      if (host.includes('localhost:') || host.includes('127.0.0.1:')) {
+        redirectUrl = `http://localhost:5173/shop?ref=${refCode}`;
+      }
+      return res.redirect(redirectUrl);
     }
 
-    return res.redirect('http://localhost:5173/shop');
+    let fallbackUrl = `${protocol}://${host}/shop`;
+    if (host.includes('localhost:') || host.includes('127.0.0.1:')) {
+      fallbackUrl = `http://localhost:5173/shop`;
+    }
+    return res.redirect(fallbackUrl);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
