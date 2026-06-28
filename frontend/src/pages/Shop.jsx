@@ -321,11 +321,12 @@ export default function Shop() {
               </div>
 
               <div className="input-group">
-                <label style={{ display: "block", marginBottom: "0.5rem", color: "#cbd5e1" }}>Card Details (Mock)</label>
+                <label style={{ display: "block", marginBottom: "0.5rem", color: "#cbd5e1" }}>Credit or Debit Card</label>
                 <input 
                   type="text" 
                   required 
                   className="input" 
+                  placeholder="4111 2222 3333 4444"
                   value={formData.card}
                   onChange={(e) => setFormData({ ...formData, card: e.target.value })}
                 />

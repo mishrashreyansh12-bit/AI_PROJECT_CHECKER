@@ -106,6 +106,28 @@ export default function InfluencerDashboard() {
     navigate('/login');
   };
 
+  const handleDownloadLogo = () => {
+    const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" width="400" height="100">
+      <defs>
+        <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#a78bfa" stop-opacity="1" />
+          <stop offset="100%" stop-color="#3b82f6" stop-opacity="1" />
+        </linearGradient>
+      </defs>
+      <text x="20" y="60" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="32" fill="url(#logo-grad)">InfluenceOps AI</text>
+      <circle cx="340" cy="50" r="15" fill="none" stroke="url(#logo-grad)" stroke-width="4"/>
+      <path d="M 333 50 L 347 50 M 340 43 L 340 57" stroke="url(#logo-grad)" stroke-width="3" stroke-linecap="round"/>
+    </svg>`;
+    const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'influenceops_logo.svg';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const formatCurrency = (val) => {
     return '₹' + parseFloat(val).toLocaleString('en-IN', { maximumFractionDigits: 2 });
   };
@@ -582,7 +604,7 @@ export default function InfluencerDashboard() {
                     </span>
                   </div>
                 </div>
-                <button className="btn btn-primary" onClick={() => alert('Logo download simulated successfully')} style={{ marginTop: '1rem', width: '100%', fontSize: '0.85rem' }}>
+                <button className="btn btn-primary" onClick={handleDownloadLogo} style={{ marginTop: '1rem', width: '100%', fontSize: '0.85rem' }}>
                   <ArrowDownToLine size={16} style={{ marginRight: '6px' }} /> Download vector assets
                 </button>
               </div>
