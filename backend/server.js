@@ -312,14 +312,22 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-sequelize
-  .sync()
-  .then(() => {
-    console.log('Database connected successfully');
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+if (require.main === module) {
+  sequelize
+    .sync()
+    .then(() => {
+      console.log('Database connected successfully');
+      app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+      });
+    })
+    .catch((err) => {
+      console.error('Database connection failed:', err.message);
     });
-  })
-  .catch((err) => {
-    console.error('Database connection failed:', err.message);
-  });
+} else {
+  sequelize.sync()
+    .then(() => console.log('Database synced for serverless function'))
+    .catch((err) => console.error('Database sync failed for serverless:', err.message));
+}
+
+module.exports = app;
