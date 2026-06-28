@@ -15,6 +15,36 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Database Sync Middleware for Serverless Execution
+let isSynced = false;
+let syncPromise = null;
+
+const ensureDbSynced = async (req, res, next) => {
+  if (isSynced) return next();
+  
+  if (!syncPromise) {
+    syncPromise = sequelize.sync()
+      .then(() => {
+        isSynced = true;
+        console.log('Database synced successfully');
+      })
+      .catch((err) => {
+        syncPromise = null;
+        console.error('Database sync failed:', err.message);
+        throw err;
+      });
+  }
+  
+  try {
+    await syncPromise;
+    next();
+  } catch (err) {
+    return res.status(500).json({ error: 'Database synchronization failed: ' + err.message });
+  }
+};
+
+app.use(ensureDbSynced);
+
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey123';
 
 // Tracking Routes
